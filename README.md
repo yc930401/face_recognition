@@ -27,7 +27,7 @@ Images after preprocess are shown below.<br />
 ![Exmaple result](/result/KNN/6.jpg)
 
 ## References
-https://www.pyimagesearch.com/2017/05/22/face-alignment-with-opencv-and-python/
-http://nbviewer.jupyter.org/gist/hernamesbarbara/5768969
-https://www.superdatascience.com/opencv-face-recognition/
+https://www.pyimagesearch.com/2017/05/22/face-alignment-with-opencv-and-python/<br />
+http://nbviewer.jupyter.org/gist/hernamesbarbara/5768969<br />
+https://www.superdatascience.com/opencv-face-recognition/<br />
 https://medium.com/@ageitgey/machine-learning-is-fun-part-4-modern-face-recognition-with-deep-learning-c3cffc121d78
