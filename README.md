@@ -2,11 +2,11 @@
 Face Recognition with OpenCV, CNN and KNN
 
 ## Introduction
-In this project, I built three models for face recognition: OpenCV LBPHFaceRecognizer, CNN and KNN._
+In this project, I built three models for face recognition: OpenCV LBPHFaceRecognizer, CNN and KNN.
 Main libraries used are cv2, dlib, PIL, keras and sklearn.
 
 ## Image preprocess
-The images are different size RGB images with faces in different directions. Some photos are full-body photos and some are half-body photos. _
+The images are different size RGB images with faces in different directions. Some photos are full-body photos and some are half-body photos.
 1.Change RGB images to gray scale images, because color do not help us classify face in this project.
 2.Face detection using cv2 or dlib.
 3. Resize images to 128*128.
