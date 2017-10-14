@@ -10,7 +10,10 @@ The images are different size RGB images with faces in different directions. Som
 1. Change RGB images to gray scale images, because color do not help us classify face in this project.
 2. Face detection using cv2 or dlib.
 3. Resize images to 128*128.
-4. Align images so that the eyes in all images are in the same positions.
+4. Align images so that the eyes in all images are in the same positions.<br />
+Images after preprocess are shown below.
+![Exmaple result](/result/preprocess_1.png)
+![Exmaple result](/result/preprocess_2.png)
 
 ## Models
 1. OpenCV LBPHFaceRecognizer
