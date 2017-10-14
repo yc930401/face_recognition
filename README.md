@@ -17,7 +17,7 @@ Images after preprocess are shown below.<br />
 
 ## Models
 1. OpenCV LBPHFaceRecognizer
-2. CNN model in keras
+2. CNN model in keras (The result of CNN is not as good as LBPHFaceRecognizer and KNN, that may because of the limited size of training dataset)
 3. KNN using sklearn
 
 ## Result
