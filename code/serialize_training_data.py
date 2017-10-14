@@ -7,7 +7,7 @@ import opencv_tools
 
 
 print("Preparing data...")
-opencv_tools.prepare_training_data("/Workspace-Github/face_recognition/training-data", True)
+faces, labels = opencv_tools.prepare_training_data("/Workspace-Github/face_recognition/training-data", True)
 print("Data prepared")
 
 #print total faces and labels
