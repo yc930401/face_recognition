@@ -1,6 +1,7 @@
 import cv2
 import os
 import sys
+import pickle
 import numpy as np
 from PIL import Image
 sys.path.insert(0, '/Workspace-Github/face_recognition/code')

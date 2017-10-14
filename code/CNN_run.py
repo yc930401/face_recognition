@@ -23,6 +23,7 @@ for i in range(len(dirs)):
     test_img = cv2.imread('/Workspace-Github/face_recognition/test-data/' + dir)
     predicted_img = CNN_tools.predict(test_img, model)
     cv2.imshow(str(i), cv2.resize(predicted_img, (400, 500)))
+    cv2.imwrite('/Workspace-Github/face_recognition/result/CNN/' + dir, predicted_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 print("Prediction complete")

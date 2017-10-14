@@ -63,7 +63,7 @@ def train_CNN(x_train, y_train):
                     metrics=['accuracy'])
     
     # check-points
-    filepath="weights-improvement-{epoch:02d}-{loss:.4f}.hdf5"
+    filepath="/Workspace-Github/face_recognition/serialized/weights-improvement-{epoch:02d}-{loss:.4f}.hdf5"
     checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='min')
     callbacks_list = [checkpoint]
     

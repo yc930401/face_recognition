@@ -74,65 +74,71 @@ def detect_face_dlib(img):
     return cv2.cvtColor(faceAligned, cv2.COLOR_BGR2GRAY), (x, y, w, h) #gray[y:y+w, x:x+h], (x,y,w,h)
 
 
-def prepare_training_data(data_folder_path):
+def prepare_training_data(data_folder_path, flag = False):
     
-    #get the directories (one directory for each subject) in data folder
-    dirs = os.listdir(data_folder_path)
-    
-    #list to hold all subject faces
-    faces = []
-    #list to hold labels for all subjects
-    labels = []
-    
-    #let's go through each directory and read images within it
-    for dir_name in dirs:
+    # to prepare training data, or load training data
+    if flag: 
+        #get the directories (one directory for each subject) in data folder
+        dirs = os.listdir(data_folder_path)
         
-        #our subject directories start with letter 's' so
-        #ignore any non-relevant directories if any
-        if not dir_name.startswith("train"):
-            continue;
+        #list to hold all subject faces
+        faces = []
+        #list to hold labels for all subjects
+        labels = []
+        
+        #let's go through each directory and read images within it
+        for dir_name in dirs:
             
-        label = int(dir_name.replace("train", ""))
-        subject_dir_path = data_folder_path + "/" + dir_name
-        
-        #get the images names that are inside the given subject directory
-        subject_images_names = os.listdir(subject_dir_path)
-        
-        for image_name in subject_images_names:
-    
-            if image_name.startswith("."):
+            #our subject directories start with letter 's' so
+            #ignore any non-relevant directories if any
+            if not dir_name.startswith("train"):
                 continue;
+                
+            label = int(dir_name.replace("train", ""))
+            subject_dir_path = data_folder_path + "/" + dir_name
             
-            image_path = subject_dir_path + "/" + image_name
-
-            #read image
-            image = cv2.imread(image_path)
+            #get the images names that are inside the given subject directory
+            subject_images_names = os.listdir(subject_dir_path)
             
-            #detect face_
-            face, rect = detect_face_CV2(image)
-                        
-            if face is not None and min(rect) >= 0:
-                #add face to list of faces
-                faces.append(face)
-                #add label for this face
-                labels.append(label)
-                #display original image
-                draw_rectangle(image, rect)
-                cv2.imshow("Training on image...", cv2.resize(image, (400, 500)))
-                # display aligned image
-                cv2.imshow("Aligned", face)
-                cv2.waitKey(100)
-            else:
-                print('Cannot detect face! ')
-            
-    cv2.destroyAllWindows()
-    cv2.waitKey(1)
-    cv2.destroyAllWindows()
-    f = open('D:/Workspace-Github/face_recognition/serialized/data_train.file', 'wb')
-    pickle.dump([faces, labels], f, pickle.HIGHEST_PROTOCOL)
+            for image_name in subject_images_names:
+        
+                if image_name.startswith("."):
+                    continue;
+                
+                image_path = subject_dir_path + "/" + image_name
+    
+                #read image
+                image = cv2.imread(image_path)
+                
+                #detect face_
+                face, rect = detect_face_CV2(image)
+                            
+                if face is not None and min(rect) >= 0:
+                    #add face to list of faces
+                    faces.append(face)
+                    #add label for this face
+                    labels.append(label)
+                    #display original image
+                    draw_rectangle(image, rect)
+                    cv2.imshow("Training on image...", cv2.resize(image, (400, 500)))
+                    # display aligned image
+                    cv2.imshow("Aligned", face)
+                    cv2.waitKey(100)
+                else:
+                    print('Cannot detect face! ')
+                
+        cv2.destroyAllWindows()
+        cv2.waitKey(1)
+        cv2.destroyAllWindows()
+        f = open('D:/Workspace-Github/face_recognition/serialized/data_train.file', 'wb')
+        pickle.dump([faces, labels], f, pickle.HIGHEST_PROTOCOL)
+        
+    else:
+        f = open('D:/Workspace-Github/face_recognition/serialized/data_train.file', 'rb')
+        data = pickle.load(f)
+        faces, labels = data[0], data[1]
+    
     return faces, labels
-
-
 
 #this function recognizes the person in image passed
 #and draws a rectangle around detected face with name of the 
