@@ -1,5 +1,5 @@
 # face_recognition
-Face Recognition with OpenCV and CNN
+Face Recognition with OpenCV, CNN and KNN
 
 ## Introduction
 In this project, I built three models for face recognition: OpenCV LBPHFaceRecognizer, CNN and KNN.
