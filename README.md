@@ -18,7 +18,10 @@ The images are different size RGB images with faces in different directions. Som
 3. KNN using sklearn
 
 ## Result
-![GitHub Logo](/images/logo.png)
+![Exmaple result](/result/KNN/2.jpg)
+![Exmaple result](/result/KNN/3.jpg)
+![Exmaple result](/result/KNN/5.jpg)
+![Exmaple result](/result/KNN/6.jpg)
 
 ## References
 https://www.pyimagesearch.com/2017/05/22/face-alignment-with-opencv-and-python/
