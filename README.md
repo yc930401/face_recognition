@@ -11,9 +11,9 @@ The images are different size RGB images with faces in different directions. Som
 2. Face detection using cv2 or dlib.
 3. Resize images to 128*128.
 4. Align images so that the eyes in all images are in the same positions.<br />
-Images after preprocess are shown below.
-![Exmaple result](/result/preprocess_1.png)
-![Exmaple result](/result/preprocess_2.png)
+Images after preprocess are shown below.<br />
+![Exmaple result](/result/preprocess_1.jpg)
+![Exmaple result](/result/preprocess_2.jpg)
 
 ## Models
 1. OpenCV LBPHFaceRecognizer
