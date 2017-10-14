@@ -1,9 +1,10 @@
 import cv2
 import os
 import sys
+import pickle
 import numpy as np
 from PIL import Image
-sys.path.insert(0, '/Workspace-Github/face-recognition/code')
+sys.path.insert(0, '/Workspace-Github/face_recognition/code')
 import opencv_tools
 import keras
 from keras.callbacks import ModelCheckpoint
@@ -13,7 +14,10 @@ from keras.layers import Dense, Conv2D, MaxPooling2D, Dropout, Flatten
 subjects = ["", "YANG MI", "BABY"]
 
 def prepare_training_data(data_folder_path):
-    faces,labels = opencv_tools.prepare_training_data(data_folder_path)
+    #faces,labels = opencv_tools.prepare_training_data(data_folder_path)
+    f = open('D:/Workspace-Github/face_recognition/serialized/data_train.file', 'rb')
+    data = pickle.load(f)
+    faces, labels = data[0], data[1]
     x_train = []
     for face in faces:
         im = Image.fromarray(face)

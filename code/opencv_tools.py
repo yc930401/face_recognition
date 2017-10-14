@@ -1,9 +1,22 @@
 import cv2
 import os
+import dlib
+import pickle
 import numpy as np
+from imutils.face_utils import FaceAligner, rect_to_bb
 
 subjects = ["", "YANG MI", "BABY"]
 
+
+def draw_rectangle(img, rect):
+    (x, y, w, h) = rect
+    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+    
+#function to draw text on give image starting from
+#passed (x, y) coordinates. 
+def draw_text(img, text, x, y):
+    cv2.putText(img, text, (x, y), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 255, 0), 2)
+    
 
 #function to detect face using OpenCV
 def detect_face_CV2(img):
@@ -11,7 +24,7 @@ def detect_face_CV2(img):
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
     #load OpenCV face detector, I am using LBP which is fast and provides better result on my dataset.
-    face_cascade = cv2.CascadeClassifier('/Workspace-Github/face-recognition/opencv-files/haarcascade_frontalface_alt.xml')
+    face_cascade = cv2.CascadeClassifier('/Workspace-Github/face_recognition/opencv-files/haarcascade_frontalface_alt.xml')
     #face_cascade = cv2.CascadeClassifier('/Workspace-Github/face-recognition/opencv-files/lbpcascade_frontalface.xml')
     
     #let's detect multiscale (some images may be closer to camera than others) images
@@ -24,10 +37,16 @@ def detect_face_CV2(img):
     
     #under the assumption that there will be only one face,
     #extract the face area
-    (x, y, w, h) = faces[0]
+    rect = (x, y, w, h) = faces[0]
+    print(rect)
+    predictor = dlib.shape_predictor('/Workspace-Github/face_recognition/opencv-files/shape_predictor_68_face_landmarks.dat')
+    fa = FaceAligner(predictor, desiredFaceWidth=128)
+    face = dlib.rectangle(left=int(x), top=int(y), right=int(x+w), bottom=int(y+h))
+    print(face)
+    faceAligned = fa.align(img, gray, face)
     #print(x,y,w,h)
     #return only the face part of the image
-    return gray[y:y+w, x:x+h], faces[0]
+    return cv2.cvtColor(faceAligned, cv2.COLOR_BGR2GRAY), rect
 
 
 #function to detect face using dlib
@@ -46,10 +65,13 @@ def detect_face_dlib(img):
         return None, None
     #under the assumption that there will be only one face,
     #extract the face area
-    (x, y, w, h) = (faces[0].left(), faces[0].top(), faces[0].width(), faces[0].height())
+    (x, y, w, h) = rect_to_bb(faces[0])
+    predictor = dlib.shape_predictor('/Workspace-Github/face_recognition/opencv-files/shape_predictor_68_face_landmarks.dat')
+    fa = FaceAligner(predictor, desiredFaceWidth=128)
+    faceAligned = fa.align(img, gray, faces[0])
     #print(x,y,w,h)
     #return only the face part of the image
-    return gray[y:y+w, x:x+h], (x,y,w,h)
+    return cv2.cvtColor(faceAligned, cv2.COLOR_BGR2GRAY), (x, y, w, h) #gray[y:y+w, x:x+h], (x,y,w,h)
 
 
 def prepare_training_data(data_folder_path):
@@ -86,34 +108,30 @@ def prepare_training_data(data_folder_path):
             #read image
             image = cv2.imread(image_path)
             
-            #display an image window to show the image 
-            cv2.imshow("Training on image...", cv2.resize(image, (400, 500)))
-            cv2.waitKey(100)
-            
             #detect face_
             face, rect = detect_face_CV2(image)
+                        
             if face is not None and min(rect) >= 0:
                 #add face to list of faces
                 faces.append(face)
                 #add label for this face
                 labels.append(label)
+                #display original image
+                draw_rectangle(image, rect)
+                cv2.imshow("Training on image...", cv2.resize(image, (400, 500)))
+                # display aligned image
+                cv2.imshow("Aligned", face)
+                cv2.waitKey(100)
+            else:
+                print('Cannot detect face! ')
             
     cv2.destroyAllWindows()
     cv2.waitKey(1)
     cv2.destroyAllWindows()
-    
+    f = open('D:/Workspace-Github/face_recognition/serialized/data_train.file', 'wb')
+    pickle.dump([faces, labels], f, pickle.HIGHEST_PROTOCOL)
     return faces, labels
 
-
-
-def draw_rectangle(img, rect):
-    (x, y, w, h) = rect
-    cv2.rectangle(img, (x, y), (x+w, y+h), (0, 255, 0), 2)
-    
-#function to draw text on give image starting from
-#passed (x, y) coordinates. 
-def draw_text(img, text, x, y):
-    cv2.putText(img, text, (x, y), cv2.FONT_HERSHEY_PLAIN, 1.5, (0, 255, 0), 2)
 
 
 #this function recognizes the person in image passed
